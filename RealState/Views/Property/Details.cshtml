@@ -1,0 +1,123 @@
+﻿@model PropertyDetailsDto
+@{
+    ViewData["Title"] = "Property Details";
+}
+
+<div class="max-w-5xl mx-auto bg-white p-6 rounded-xl shadow-md mt-6">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">@Model.Title</h1>
+        <a asp-action="Index" class="text-green-600 hover:underline font-medium">← Back to List</a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- قسم الصور -->
+        <div>
+            @if (Model.ImageUrls.Any())
+            {
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Property Images</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    @foreach (var imageUrl in Model.ImageUrls)
+                    {
+                        <div class="group relative">
+                            <img src="@imageUrl" alt="Property Image"
+                                 class="w-full h-32 object-cover rounded-lg cursor-pointer shadow-sm hover:shadow-md transition-shadow duration-200"
+                                 onclick="openModal('@imageUrl')" />
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="flex items-center justify-center h-32 bg-gray-100 rounded-lg">
+                    <p class="text-gray-500 italic">No images available.</p>
+                </div>
+            }
+        </div>
+
+        <!-- قسم التفاصيل -->
+        <div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Property Details</h3>
+            <div class="space-y-3 text-gray-700">
+                <div class="flex justify-between border-b pb-2">
+                    <span class="font-medium">City:</span>
+                    <span class="text-gray-900">@Model.City</span>
+                </div>
+                <div class="flex justify-between border-b pb-2">
+                    <span class="font-medium">Property Type:</span>
+                    <span class="text-gray-900 capitalize">@Model.PropertyType</span>
+                </div>
+                <div class="flex justify-between border-b pb-2">
+                    <span class="font-medium">Price Type:</span>
+                    <span class="text-gray-900">@Model.PriceType</span>
+                </div>
+                @if (Model.Price.HasValue)
+                {
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="font-medium">Price:</span>
+                        <span class="text-green-600 font-bold">@Model.Price.Value.ToString("C")</span>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.ContactPhone))
+                {
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="font-medium">Contact Phone:</span>
+                        <span class="text-gray-900">@Model.ContactPhone</span>
+                    </div>
+                }
+                <div class="flex justify-between">
+                    <span class="font-medium">Posted On:</span>
+                    <span class="text-gray-900">@Model.CreatedOn.ToString("dd MMM yyyy")</span>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <div class="mt-6">
+                    <h3 class="font-semibold text-gray-800 mb-2">Description</h3>
+                    <p class="text-gray-600 bg-gray-50 p-4 rounded-lg whitespace-pre-line">@Model.Description</p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="mt-8 flex flex-col sm:flex-row gap-3">
+        <a asp-action="Index" class="px-5 py-2.5 text-center bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition">Back to List</a>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a asp-action="MyOffers" class="px-5 py-2.5 text-center bg-green-600 text-white rounded-lg hover:bg-green-700 transition">My Offers</a>
+        }
+    </div>
+</div>
+
+<!-- Modal for Full Image -->
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+    <div class="relative max-w-4xl max-h-[90vh]">
+        <img id="modalImage" src="" alt="Full Image" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl" />
+        <button onclick="closeModal()" class="absolute -top-12 right-0 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openModal(src) {
+            document.getElementById('modalImage').src = src;
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+}
