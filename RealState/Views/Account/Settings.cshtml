@@ -1,0 +1,83 @@
+﻿@model UserSettingsViewModel
+@{
+    ViewData["Title"] = "Account Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md mt-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Account Settings</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <form asp-action="Settings" method="post" class="space-y-5">
+        <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm mb-4"></div>
+
+        <div>
+            <label asp-for="FirstName" class="block text-sm font-medium text-gray-700">First Name</label>
+            <input asp-for="FirstName" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" />
+            <span asp-validation-for="FirstName" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div>
+            <label asp-for="LastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+            <input asp-for="LastName" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" />
+            <span asp-validation-for="LastName" class="text-red-500 text-sm"></span>
+        </div>
+        
+        <div>
+            <label asp-for="UserName" class="block text-sm font-medium text-gray-700">Username</label>
+            <input asp-for="UserName"
+                   type="text"
+                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                   required />
+            <span asp-validation-for="UserName" class="text-red-500 text-sm"></span>
+        </div>
+        <div>
+            <label asp-for="Email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input asp-for="Email" type="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" />
+            <span asp-validation-for="Email" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div>
+            <label asp-for="PhoneNumber" class="block text-sm font-medium text-gray-700">Phone (Optional)</label>
+            <input asp-for="PhoneNumber" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" />
+            <span asp-validation-for="PhoneNumber" class="text-red-500 text-sm"></span>
+        </div>
+
+        <hr class="my-6 border-gray-200" />
+
+        <h3 class="text-lg font-semibold text-gray-800 mb-3">Change Password (Optional)</h3>
+
+        <div>
+            <label asp-for="CurrentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
+            <input asp-for="CurrentPassword" type="password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" />
+            <span asp-validation-for="CurrentPassword" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div>
+            <label asp-for="NewPassword" class="block text-sm font-medium text-gray-700">New Password</label>
+            <input asp-for="NewPassword" type="password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" />
+            <span asp-validation-for="NewPassword" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div>
+            <label asp-for="ConfirmNewPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+            <input asp-for="ConfirmNewPassword" type="password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" />
+            <span asp-validation-for="ConfirmNewPassword" class="text-red-500 text-sm"></span>
+        </div>
+
+        <button type="submit"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition">
+            Save Changes
+        </button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
